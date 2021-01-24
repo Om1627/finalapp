@@ -22,9 +22,8 @@ export default class StudentsScreen extends Component{
     this.state={
       allteachers:[]
     }
-    this.ref=null
   }
-
+  
   getAllTeachers=()=>{
     this.ref = db.collection('users').where("user_domain","==",'Teacher')
     .onSnapshot((snapshot)=>{
@@ -40,64 +39,49 @@ export default class StudentsScreen extends Component{
     })
   }
 
-  keyExtractor = (item, index) => index.toString()
-
-  renderItem = ({item,index}) =>{
-      return (
-        <View>
-        <ListItem
-          key={index}
-      
-          title={item.first_name}
-          titleStyle={styles.LiTitle}
-          
-          bottomDivider
-        />
-      <View>
-        <TouchableOpacity style={{backgroundColor:'#85af96'}}>
-          <Text>Request</Text>
+  componentDidMount(){
+    this.getAllTeachers()
+  }
+render(){
+  return(
+    
+    <View>
+<MyHeader title='Students screen' navigation={this.props.navigation}/>
+<FlatList
+                data={this.state.allteachers}
+                renderItem={({ item }) => (
+                  <View style={{backgroundColor:'lightgrey',marginTop:50}}>
+ 
+                  <Text style={{fontSize:25,fontWeight:'bold',alignSelf:'center',marginLeft:25}}>
+                    {item.first_name} {item.last_name}
+                  </Text>
+                  
+                  <TouchableOpacity style={{backgroundColor:'#85af96',alignSelf:'flex-end',marginRight:20,padding:5,margin:10}} onPress={() => {
+              this.props.navigation.navigate("TeacherDetails", {
+                details: item,
+              });
+            }}>
+          <Text style={{fontSize:15,fontWeight:"bold"}}>View</Text>
         </TouchableOpacity>
-      </View>
-        </View>
-      )
- }
+                  
+                  </View>
+                )}
+                keyExtractor={(item, index) => index.toString()}
+               
+                /> 
+
+    
+  {console.log(this.state.allteachers)}
+
+           
       
- 
-componentDidMount(){
-  this.getAllTeachers()
-}
 
-componentWillUnmount(){
-  this.ref()
-}
- 
-    render(){
-        return(
-
-          
-            <View style={styles.container}>
-              <MyHeader title='Students Screen' navigation={this.props.navigation}/>
-               {
-            this.state.allteachers.length === 0
-            ?(
-              <View style={styles.imageView}>
-               
-                <Text style={{fontSize:25}}>There are no teachers available</Text>
-              </View>
-            )
-            :(
-              <FlatList keyExtractor={this.keyExtractor} data={this.state.allteachers} renderItem={this.renderItem}/>
-            )
-          }
-          
-          {
-            console.log(this.state.allteachers)
-          }
-               
-
-            </View>
-        )
-    }
+ </View>
+   
+      
+    
+  )
+  }
 }
 const styles = StyleSheet.create({
   container : {

@@ -8,7 +8,7 @@ import db from '../config'
         return(
             <Header
               leftComponent={<Icon name='bars' type='font-awesome' color='#696969' onPress={()=>props.navigation.toggleDrawer()} />}
-              centerComponent={{ text: props.title, style: { color: '#90A5A9', fontSize:20,fontWeight:"bold", } }}
+              centerComponent={{ text: props.title, style: { color: '#006666', fontSize:20,fontWeight:"bold", } }}
               style={{width:'100%'}}
                backgroundColor = "#5e96b9"
             />
